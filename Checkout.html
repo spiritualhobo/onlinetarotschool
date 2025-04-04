@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
+    <style>
+        h1 {
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: blue;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #cart {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            max-width: 600px;
+        }
+        #cart ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #cart ul li {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: rgb(98, 203, 98);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: green;
+        }
+        .remove-btn {
+            background-color: red;
+            color: white;
+        }
+        .remove-btn:hover {
+            background-color: darkred;
+        }
+        .payment-options {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .payment-options button {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="merchandise.html">Merchandise</a>
+        <a href="courses.html">Courses</a>
+        <a href="zodiacs.html">Zodiacs</a>
+        <a href="my book.html">My Book</a>
+        <a href="contact.html">Contact Me</a>
+        <a href="Checkout.html">Checkout</a>
+    </nav>
+    <div id="cart">
+        <h3>Your Cart</h3>
+        <ul id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </ul>
+        <p><strong>Total:</strong> $<span id="cart-total">0</span></p>
+
+        <!-- Payment Options -->
+        <div class="payment-options">
+            <button onclick="payWithPayPal()">Pay with PayPal</button>
+        </div>
+
+        <!-- PayPal Form -->
+        <form id="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" style="display: none;">
+            <input type="hidden" name="cmd" value="_xclick">
+            <input type="hidden" name="business" value="edbuley@gmail.com"> <!-- Replace with your PayPal email -->
+            <input type="hidden" name="item_name" value="Tarot School Purchase">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" id="paypal-amount" name="amount" value="0">
+        </form>
+    </div>
+    <script>
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsElement = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const paypalForm = document.getElementById('paypal-form');
+        const paypalAmountInput = document.getElementById('paypal-amount');
+
+        function updateCart() {
+            // Clear current cart items
+            cartItemsElement.innerHTML = '';
+
+            // Add each item to the cart display
+            let total = 0;
+            cart.forEach((cartItem, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${cartItem.item} - $${cartItem.price}`;
+                
+                // Create a "Remove" button
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.classList.add('remove-btn');
+                removeButton.onclick = () => removeFromCart(index);
+
+                // Append the "Remove" button to the list item
+                li.appendChild(removeButton);
+                cartItemsElement.appendChild(li);
+
+                total += cartItem.price;
+            });
+
+            // Update total
+            cartTotalElement.textContent = total.toFixed(2);
+        }
+
+        function removeFromCart(index) {
+            // Remove the item from the cart array
+            cart.splice(index, 1);
+
+            // Save the updated cart to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Update the cart display
+            updateCart();
+        }
+
+        function payWithPayPal() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+            } else {
+                // Calculate the total amount
+                const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+
+                // Set the total amount in the PayPal form
+                paypalAmountInput.value = total;
+
+                // Submit the PayPal form
+                paypalForm.submit();
+            }
+        }
+
+        // Update the cart display on page load
+        updateCart();
+    </script>
+</body>
+</html>

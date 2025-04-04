@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zodiacs</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
+    <style>
+        h1 {
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: blue;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .image-container {
+            display: flex; /* Enables Flexbox */
+            justify-content: center; /* Centers the images horizontally */
+            align-items: center; /* Aligns the images vertically */
+            gap: 20px; /* Adds space between the images */
+            margin: 40px auto; /* Centers the container on the page */
+            flex-wrap: wrap; /* Allows images to wrap on smaller screens */
+        }
+        .image-container img {
+            max-width: 30%; /* Ensures the images take up no more than 30% of the container width */
+            height: auto; /* Maintains the aspect ratio */
+            border-radius: 10px; /* Optional: Adds rounded corners to the images */
+            border: 3px solid darkblue;
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .image-container {
+                flex-direction: column; /* Stacks images vertically on smaller screens */
+                gap: 10px; /* Reduces the gap between images */
+            }
+            .image-container img {
+                max-width: 80%; /* Makes images larger on smaller screens */
+                margin: 0 auto; /* Centers the images */
+            }
+            nav a {
+                display: block; /* Stacks navigation links vertically */
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Zodiacs</h1>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="merchandise.html">Merchandise</a>
+        <a href="courses.html">Courses</a>
+        <a href="zodiacs.html">Zodiacs</a>
+        <a href="my book.html">My Book</a>
+        <a href="contact.html">Contact Me</a>
+        <a href="Checkout.html">Checkout</a>
+    </nav>
+    <div class="image-container">
+        <img src="ACTUAL ZODIAC CROSS REVERENCE.jpg" alt="Zodiac Cross">
+        <img src="c1wnl1li.png" alt="Zodiac Chart">
+    </div>
+</body>
+</html>
