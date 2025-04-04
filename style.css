@@ -14,6 +14,5 @@ body{
             text-decoration: underline;
             @media (max-width: 768px) {
     nav a {
-        display: block; /* Stacks navigation links vertically */
         margin: 10px 0;
     }
