@@ -37,6 +37,16 @@
         .contact-text {
             overflow: hidden; /* Ensures the text wraps properly around the image */
         }
+        @media (max-width: 768px) {
+           
+            .contact-container {
+                flex-direction: column; /* Stacks the image and text vertically */
+                text-align: center;
+            }
+            img {
+                margin: 0 auto 20px auto; /* Centers the image on smaller screens */
+            }
+        }
     </style>
 </head>
 <body>
