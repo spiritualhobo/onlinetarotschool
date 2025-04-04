@@ -68,8 +68,8 @@
             margin-top: 20px;
         }
         .note-container textarea {
-            width: 580px;
-            height: 50px;
+            width: 100%;
+            height: 100px;
             padding: 10px;
             font-size: 1em;
             border: 1px solid #ccc;
@@ -104,10 +104,11 @@
         <!-- Payment Options -->
         <div class="payment-options">
             <button onclick="payWithPayPal()">Pay with PayPal</button>
+            <button onclick="clearCart()">Remove All Items</button>
         </div>
 
         <!-- PayPal Form -->
-        <form id="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" style="display: none;">
+        <form id="paypal-form" action="confirmation.html" method="post" style="display: none;">
             <input type="hidden" name="cmd" value="_xclick">
             <input type="hidden" name="business" value="edbuley@gmail.com"> <!-- Replace with your PayPal email -->
             <input type="hidden" name="item_name" id="paypal-item-name" value=""> <!-- Dynamic item name -->
@@ -134,19 +135,14 @@
             let total = 0;
             cart.forEach((cartItem, index) => {
                 const li = document.createElement('li');
-                li.textContent = `${cartItem.item} - $${cartItem.price}`;
-                
-                // Create a "Remove" button
-                const removeButton = document.createElement('button');
-                removeButton.textContent = 'Remove';
-                removeButton.classList.add('remove-btn');
-                removeButton.onclick = () => removeFromCart(index);
-
-                // Append the "Remove" button to the list item
-                li.appendChild(removeButton);
+                li.innerHTML = `
+                    ${cartItem.item} - $${cartItem.price} x ${cartItem.quantity}
+                    <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+                    <button onclick="increaseQuantity(${index})">+</button>
+                    <button onclick="decreaseQuantity(${index})">-</button>
+                `;
                 cartItemsElement.appendChild(li);
-
-                total += cartItem.price;
+                total += cartItem.price * cartItem.quantity;
             });
 
             // Update total
@@ -154,13 +150,30 @@
         }
 
         function removeFromCart(index) {
-            // Remove the item from the cart array
             cart.splice(index, 1);
-
-            // Save the updated cart to localStorage
             localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
 
-            // Update the cart display
+        function increaseQuantity(index) {
+            cart[index].quantity += 1;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
+
+        function decreaseQuantity(index) {
+            if (cart[index].quantity > 1) {
+                cart[index].quantity -= 1;
+            } else {
+                removeFromCart(index);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
+
+        function clearCart() {
+            localStorage.removeItem('cart');
+            cart.length = 0;
             updateCart();
         }
 
@@ -168,26 +181,19 @@
             if (cart.length === 0) {
                 alert('Your cart is empty!');
             } else {
-                // Calculate the total amount
-                const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
-
-                // Set the total amount in the PayPal form
+                const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
                 paypalAmountInput.value = total;
 
-                // Set the item_name field to the cart details
-                const cartDetails = cart.map(item => `${item.item} ($${item.price})`).join(', ');
+                const cartDetails = cart.map(item => `${item.item} ($${item.price} x ${item.quantity})`).join(', ');
                 paypalItemNameInput.value = cartDetails;
 
-                // Add only the note to the custom field
                 const note = purchaseNote.value.trim();
-                paypalNotesInput.value = note || "No note provided"; // Default message if no note is entered
+                paypalNotesInput.value = note || "No note provided";
 
-                // Submit the PayPal form
                 paypalForm.submit();
             }
         }
 
-        // Update the cart display on page load
         updateCart();
     </script>
 </body>
