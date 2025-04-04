@@ -9,7 +9,7 @@
         h1 {
             text-align: center;
         }
-       nav {
+        nav {
             text-align: center;
             margin: 20px 0;
         }
@@ -21,7 +21,10 @@
         nav a:hover {
             text-decoration: underline;
         }
-       
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
         #cart {
             margin: 20px auto;
             padding: 10px;
@@ -96,6 +99,7 @@
             <input type="hidden" name="item_name" value="Tarot School Purchase">
             <input type="hidden" name="currency_code" value="USD">
             <input type="hidden" id="paypal-amount" name="amount" value="0">
+            <input type="hidden" name="custom" id="paypal-custom" value=""> <!-- Custom field for order details -->
         </form>
     </div>
     <script>
@@ -104,6 +108,7 @@
         const cartTotalElement = document.getElementById('cart-total');
         const paypalForm = document.getElementById('paypal-form');
         const paypalAmountInput = document.getElementById('paypal-amount');
+        const paypalCustomInput = document.getElementById('paypal-custom');
 
         function updateCart() {
             // Clear current cart items
@@ -152,6 +157,10 @@
 
                 // Set the total amount in the PayPal form
                 paypalAmountInput.value = total;
+
+                // Add cart details to the custom field
+                const cartDetails = cart.map(item => `${item.item} ($${item.price})`).join(', ');
+                paypalCustomInput.value = cartDetails;
 
                 // Submit the PayPal form
                 paypalForm.submit();
