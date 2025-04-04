@@ -21,7 +21,10 @@
         nav a:hover {
             text-decoration: underline;
         }
-       
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
         #cart {
             margin: 20px auto;
             padding: 10px;
@@ -136,13 +139,11 @@
             cart.forEach((cartItem, index) => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    ${cartItem.item} - $${cartItem.price} x ${cartItem.quantity}
+                    ${cartItem.item} - $${cartItem.price}
                     <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
-                    <button onclick="increaseQuantity(${index})">+</button>
-                    <button onclick="decreaseQuantity(${index})">-</button>
                 `;
                 cartItemsElement.appendChild(li);
-                total += cartItem.price * cartItem.quantity;
+                total += cartItem.price;
             });
 
             // Update total
@@ -151,22 +152,6 @@
 
         function removeFromCart(index) {
             cart.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCart();
-        }
-
-        function increaseQuantity(index) {
-            cart[index].quantity += 1;
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCart();
-        }
-
-        function decreaseQuantity(index) {
-            if (cart[index].quantity > 1) {
-                cart[index].quantity -= 1;
-            } else {
-                removeFromCart(index);
-            }
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCart();
         }
@@ -181,10 +166,10 @@
             if (cart.length === 0) {
                 alert('Your cart is empty!');
             } else {
-                const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
+                const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
                 paypalAmountInput.value = total;
 
-                const cartDetails = cart.map(item => `${item.item} ($${item.price} x ${item.quantity})`).join(', ');
+                const cartDetails = cart.map(item => `${item.item} ($${item.price})`).join(', ');
                 paypalItemNameInput.value = cartDetails;
 
                 const note = purchaseNote.value.trim();
