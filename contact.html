@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Me</title>
@@ -23,30 +22,32 @@
             text-decoration: underline;
         }
         .contact-container {
-            overflow: hidden; /* Ensures the container wraps around floated elements */
+            display: flex;
+            flex-wrap: wrap; /* Allows content to wrap on smaller screens */
+            align-items: center;
+            justify-content: center;
             margin: 20px;
         }
         img {
-            float: left; /* Floats the image to the left */
-            max-width: 15%;
+            max-width: 150px; /* Sets a maximum width for the image */
             height: auto;
-            margin-left: 400px;
-            margin-right: 20px; /* Adds space between the image and text */
+            margin: 10px; /* Adds spacing around the image */
             border-radius: 10px; /* Optional: Adds rounded corners to the image */
         }
         .contact-text {
-            overflow: hidden; /* Ensures the text wraps properly around the image */
+            text-align: center; /* Centers the text */
+            margin: 10px;
         }
+        /* Responsive Design */
         @media (max-width: 768px) {
-           
+          
             .contact-container {
                 flex-direction: column; /* Stacks the image and text vertically */
                 text-align: center;
             }
-            img {
+/*             img {
                 margin: 0 auto 20px auto; /* Centers the image on smaller screens */
-                align:self: center; /* Centers the image */
-            }
+            } */
         }
     </style>
 </head>
@@ -64,11 +65,6 @@
     <div class="contact-container">
         <img src="hobo hood 4 -.jpg" alt="Hobo Hood">
         <div class="contact-text">
-           <br>
-           <br>
-           <br>
-           <br>
-           <br>
             <h3>Email: hobotarot@gmail.com</h3>
             <h3>TikTok: @the.spiritual hobo</h3>
             <h3>Youtube: @spiritualhobo5351</h3>
